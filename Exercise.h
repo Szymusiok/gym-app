@@ -16,6 +16,11 @@ private:
     unsigned int ExerciseSeries;
     unsigned int ExerciseReps;
 public:
+    Exercise() = default;
+    Exercise(std::string name)
+    : ExerciseName{name}, ExerciseWeight{0}, ExerciseSeries{0}, ExerciseReps{0} {}
+    ~Exercise() = default;
+
     std::string getExerciseName() const;
     double getExerciseWeight() const;
     unsigned int getExerciseSeries() const;
