@@ -88,3 +88,11 @@ void User::updateExercise() {
 
     std::cout<<"Exercise udpated succesfully!"<<std::endl;
 }
+
+void User::displayExercises() {
+    int ID = 1;
+    for(Exercise exercise : UserExercises){
+        std::cout<<ID<<exercise;
+        ID++;
+    }
+}

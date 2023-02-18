@@ -39,6 +39,7 @@ public:
     void addExercise();
     void deleteExercise();
     void updateExercise();
+    void displayExercises();
 };
 
 
