@@ -3,4 +3,4 @@ project(gym_app)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(gym_app main.cpp)
+add_executable(gym_app main.cpp User.h User.cpp Exercise.h Exercise.cpp)
