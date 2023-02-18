@@ -14,8 +14,8 @@
 class User {
     friend std::ostream &operator<<(std::ostream &os, const User &user);
 private:
-    std::string UserName;
-    std::string UserSurname;
+    std::string UserFirstName;
+    std::string UserLastname;
     unsigned int UserAge;
     double UserWeight;
 
@@ -23,16 +23,16 @@ private:
 public:
     User() = default;
     User(std::string name, std::string surname, unsigned int age, double weight)
-    : UserName{name}, UserSurname{surname}, UserAge{age}, UserWeight{weight} {}
+    : UserFirstName{name}, UserLastname{surname}, UserAge{age}, UserWeight{weight} {}
     ~User() = default;
 
-    std::string getUserName() const;
-    std::string getUserSurname() const;
+    std::string getUserFirstName() const;
+    std::string getUserLastname() const;
     unsigned int getUserAge() const;
     double getUserWeight() const;
 
-    void setUserName(std::string name);
-    void setUserSurname(std::string surname);
+    void setUserFirstName(std::string name);
+    void setUserLastname(std::string surname);
     void setUserAge(int age);
     void setUserWeight(double weight);
 

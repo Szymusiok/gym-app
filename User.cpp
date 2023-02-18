@@ -8,17 +8,17 @@
 #include <string>
 
 std::ostream &operator<<(std::ostream &os, const User &user){
-    os<<"Name: "<<user.UserName<<" "<<user.UserSurname<<
-      "\nAge: "<<user.UserAge<<" y/o\nWeight: "<<user.UserWeight<<" kg"<<std::endl;
+    os << "Name: " << user.UserFirstName << " " << user.UserLastname <<
+       "\nAge: " << user.UserAge<<" y/o\nWeight: "<<user.UserWeight<<" kg"<<std::endl;
     return os;
 }
 
-std::string User::getUserName() const{
-    return UserName;
+std::string User::getUserFirstName() const{
+    return UserFirstName;
 }
 
-std::string User::getUserSurname() const{
-    return UserSurname;
+std::string User::getUserLastname() const{
+    return UserLastname;
 }
 
 unsigned int User::getUserAge() const{
@@ -29,12 +29,12 @@ double User::getUserWeight() const{
     return UserWeight;
 }
 
-void User::setUserName(std::string name) {
-    UserName=name;
+void User::setUserFirstName(std::string name) {
+    UserFirstName=name;
 }
 
-void User::setUserSurname(std::string surname) {
-    UserSurname=surname;
+void User::setUserLastname(std::string surname) {
+    UserLastname=surname;
 }
 
 void User::setUserAge(int age) {
