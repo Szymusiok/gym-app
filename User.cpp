@@ -6,6 +6,7 @@
 #include "Exercise.h"
 #include <iostream>
 #include <string>
+#include <iomanip>
 
 std::ostream &operator<<(std::ostream &os, const User &user){
     os << "Name: " << user.UserFirstName << " " << user.UserLastname <<
@@ -62,7 +63,7 @@ void User::deleteExercise() {
     std::cout<<"Which exercise you want to delete: ";
     std::cin>>Select;
 
-    UserExercises.erase(UserExercises.begin()+Select);
+    UserExercises.erase(UserExercises.begin()+Select-1);
 
     std::cout<<"Exercise deleted succesfully!"<<std::endl;
 }
@@ -92,6 +93,7 @@ void User::updateExercise() {
 
 void User::displayExercises() {
     int ID = 1;
+    std::cout<<std::left<<std::setw(3)<<"ID"<<std::left<<std::setw(15)<<"Name"<<std::left<<std::setw(8)<<"Weight"<<std::left<<std::setw(8)<<"Series"<<std::left<<std::setw(8)<<"Reps"<<std::endl;
     for(Exercise exercise : UserExercises){
         std::cout<<ID<<". "<<exercise;
         ID++;

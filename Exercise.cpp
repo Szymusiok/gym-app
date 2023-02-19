@@ -5,9 +5,10 @@
 #include "Exercise.h"
 #include <iostream>
 #include <string>
+#include <iomanip>
 
 std::ostream &operator<<(std::ostream &os, const Exercise &exercise){
-    os<<exercise.ExerciseName<<" "<<exercise.ExerciseWeight<<"kg "<<exercise.ExerciseSeries<<" "<<exercise.getExerciseReps()<<std::endl;
+    os<<std::left<<std::setw(15)<<exercise.ExerciseName<<" "<<std::left<<std::setw(8)<<exercise.ExerciseWeight<<std::left<<std::setw(8)<<exercise.ExerciseSeries<<" "<<std::left<<std::setw(8)<<exercise.getExerciseReps()<<std::endl;
     return os;
 }
 
