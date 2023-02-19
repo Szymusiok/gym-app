@@ -92,14 +92,14 @@ void displayMainMenu(std::vector<User>&users){
         else
             displayUsers(users);
 
-        std::cout << "\nType '0' to add another profile."
-                     "\nType 'x' to exit."
+        std::cout << "\nType '+' to add another profile."
+                     "\nType '0' to exit."
                      "\nEnter your profile: ";
         std::cin >> select;
 
-        if(select=='0')
+        if(select=='+')
             addUser(users);
-        else if(select=='x')
+        else if(select=='0')
             break;
         else if(int(select)-48>=1&&int(select)-48<=users.size()) //todo: readme why that
             displayUserMenu(users.at(int(select)-49));

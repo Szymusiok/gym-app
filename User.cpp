@@ -84,7 +84,7 @@ void User::updateExercise() {
     std::cin>>ExerciseSeries;
     UserExercises.at(Select-1).setExerciseSeries(ExerciseSeries);
 
-    std::cout<<"Enter nnumber of reps: ";
+    std::cout<<"Enter number of reps: ";
     std::cin>>ExerciseReps;
     UserExercises.at(Select-1).setExerciseReps(ExerciseReps);
 
@@ -92,10 +92,16 @@ void User::updateExercise() {
 }
 
 void User::displayExercises() {
-    int ID = 1;
-    std::cout<<std::left<<std::setw(3)<<"ID"<<std::left<<std::setw(15)<<"Name"<<std::left<<std::setw(8)<<"Weight"<<std::left<<std::setw(8)<<"Series"<<std::left<<std::setw(8)<<"Reps"<<std::endl;
-    for(Exercise exercise : UserExercises){
-        std::cout<<ID<<". "<<exercise;
-        ID++;
+    if(UserExercises.empty())
+        std::cout<<"There are no exercises, add some!"<<std::endl;
+    else {
+        int ID = 1;
+        std::cout << std::left << std::setw(3) << "ID" << std::left << std::setw(25) << "Name" << std::left
+                  << std::setw(8) << "Weight" << std::left << std::setw(8) << "Series" << std::left << std::setw(8)
+                  << "Reps" << std::endl;
+        for (Exercise exercise: UserExercises) {
+            std::cout << ID << ". " << exercise;
+            ID++;
+        }
     }
 }
