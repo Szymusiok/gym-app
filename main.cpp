@@ -3,13 +3,33 @@
 #include "User.h"
 #include <vector>
 #include <stdlib.h>
+#include <iomanip>
 
 //Function declaration
 void displayUsers(std::vector<User>users);
 void displayMainMenu(std::vector<User>&users);
 void addUser(std::vector<User>&users);
 void displayUserMenu(User &user);
+void changePersonalInformation(User &user);
 //end of declaration
+
+void changePersonalInformation(User &user){
+    std::string newName;
+    int age;
+
+    std::cout<<"Enter new first name: ";
+    std::cin.ignore();
+    getline(std::cin,newName);
+    user.setUserFirstName(newName);
+
+    std::cout<<"Enter new last name: ";
+    getline(std::cin,newName);
+    user.setUserLastname(newName);
+
+    std::cout<<"Enter new age: ";
+    std::cin>>age;
+    user.setUserAge(age);
+}
 
 void displayUserMenu(User &user) {
     int select=1;
@@ -22,10 +42,9 @@ void displayUserMenu(User &user) {
         user.displayExercises();
 
         std::cout << std::endl;
-        std::cout << "1. Add exercise." << std::endl;
-        std::cout << "2. Delete exercise." << std::endl;
-        std::cout << "3. Update exercise." << std::endl;
-        std::cout << "0. Return." << std::endl;
+        std::cout << std::left<<std::setw(25)<<"1. Add exercise."<<"4. Change personal information."<<std::endl;
+        std::cout << std::left<<std::setw(25)<<"2. Delete exercise."<<"5. Change user weight."<<std::endl;
+        std::cout << std::left<<std::setw(25)<<"3. Update exercise."<<"0. Return."<<std::endl;
         std::cout<<"Enter: ";
         std::cin>>select;
         switch(select){
@@ -39,6 +58,14 @@ void displayUserMenu(User &user) {
                 break;
             case 3:
                 user.updateExercise();
+                break;
+            case 4:
+                changePersonalInformation(user);
+                break;
+            case 5:
+                std::cout<<"Enter new weight:";
+                double weight;
+                user.setUserWeight(weight);
                 break;
             default:
                 std::cout<<"Wrong choice, try again."<<std::endl;
