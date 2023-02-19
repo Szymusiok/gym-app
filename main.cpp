@@ -8,16 +8,42 @@
 void displayUsers(std::vector<User>users);
 void displayMainMenu(std::vector<User>&users);
 void addUser(std::vector<User>&users);
-void displayUserMenu(User user);
+void displayUserMenu(User &user);
 //end of declaration
 
-void displayUserMenu(User user) {
-    system("cls");
+void displayUserMenu(User &user) {
+    int select=1;
+    while(select!=0) {
+        system("cls");
 
-    std::cout << user;
+        std::cout << user << std::endl;
 
-    std::cout << "Training plan"<<std::endl<<std::endl;
-    user.displayExercises();
+        std::cout << "Training plan:" << std::endl;
+        user.displayExercises();
+
+        std::cout << std::endl;
+        std::cout << "1. Add exercise." << std::endl;
+        std::cout << "2. Delete exercise." << std::endl;
+        std::cout << "3. Update exercise." << std::endl;
+        std::cout << "0. Return." << std::endl;
+        std::cout<<"Enter: ";
+        std::cin>>select;
+        switch(select){
+            case 0:
+                break;
+            case 1:
+                user.addExercise();
+                break;
+            case 2:
+                user.deleteExercise();
+                break;
+            case 3:
+                user.updateExercise();
+                break;
+            default:
+                std::cout<<"Wrong choice, try again."<<std::endl;
+        }
+    }
 }
 
 void addUser(std::vector<User>&users){

@@ -7,7 +7,7 @@
 #include <string>
 
 std::ostream &operator<<(std::ostream &os, const Exercise &exercise){
-    os<<exercise.ExerciseName<<" "<<exercise.ExerciseWeight<<" "<<exercise.ExerciseSeries<<" "<<exercise.getExerciseReps()<<std::endl;
+    os<<exercise.ExerciseName<<" "<<exercise.ExerciseWeight<<"kg "<<exercise.ExerciseSeries<<" "<<exercise.getExerciseReps()<<std::endl;
     return os;
 }
 

@@ -49,7 +49,8 @@ void User::addExercise() {
     std::string ExerciseName;
 
     std::cout<<"Enter name: ";
-    std::cin>>ExerciseName;
+    std::cin.ignore();
+    getline(std::cin,ExerciseName);
 
     UserExercises.push_back(Exercise(ExerciseName));
     std::cout<<"Exercise "<<ExerciseName<<" added succesfully!"<<std::endl;
@@ -76,15 +77,15 @@ void User::updateExercise() {
 
     std::cout<<"Enter new weight: ";
     std::cin>>ExerciseWeight;
-    UserExercises.at(Select).setExerciseWeight(ExerciseWeight);
+    UserExercises.at(Select-1).setExerciseWeight(ExerciseWeight);
 
     std::cout<<"Enter number of series: ";
     std::cin>>ExerciseSeries;
-    UserExercises.at(Select).setExerciseWeight(ExerciseSeries);
+    UserExercises.at(Select-1).setExerciseSeries(ExerciseSeries);
 
     std::cout<<"Enter nnumber of reps: ";
     std::cin>>ExerciseReps;
-    UserExercises.at(Select).setExerciseWeight(ExerciseReps);
+    UserExercises.at(Select-1).setExerciseReps(ExerciseReps);
 
     std::cout<<"Exercise udpated succesfully!"<<std::endl;
 }
@@ -92,7 +93,7 @@ void User::updateExercise() {
 void User::displayExercises() {
     int ID = 1;
     for(Exercise exercise : UserExercises){
-        std::cout<<ID<<exercise;
+        std::cout<<ID<<". "<<exercise;
         ID++;
     }
 }

@@ -24,7 +24,9 @@ public:
     User() = default;
     User(std::string name, std::string surname, unsigned int age, double weight)
     : UserFirstName{name}, UserLastname{surname}, UserAge{age}, UserWeight{weight} {}
-    ~User() = default;
+    User(const User &copy_user)
+    : UserFirstName{copy_user.UserFirstName}, UserLastname{copy_user.UserLastname}, UserAge{copy_user.UserAge}, UserWeight{copy_user.UserWeight}{}
+    ~User()= default;
 
     std::string getUserFirstName() const;
     std::string getUserLastname() const;
