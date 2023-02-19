@@ -4,12 +4,21 @@
 #include <vector>
 #include <stdlib.h>
 
-size_t SELECTED_USER;
-
+//Function declaration
 void displayUsers(std::vector<User>users);
-void displayUsersMenu(std::vector<User>&users);
-
+void displayMainMenu(std::vector<User>&users);
 void addUser(std::vector<User>&users);
+void displayUserMenu(User user);
+//end of declaration
+
+void displayUserMenu(User user) {
+    system("cls");
+
+    std::cout << user;
+
+    std::cout << "Training plan"<<std::endl<<std::endl;
+    user.displayExercises();
+}
 
 void addUser(std::vector<User>&users){
     system("cls");
@@ -23,15 +32,16 @@ void addUser(std::vector<User>&users){
     unsigned int UserAge;
     double UserWeight;
 
+    std::cin.ignore();
     std::cout << "Enter the first name: ";
-    std::cin >> UserFirstName;
+    getline(std::cin,UserFirstName);
     std::cout << "Enter the last name: ";
-    std::cin >> UserLastName;
+    getline(std::cin,UserLastName);
     std::cout << "Enter user age: ";
-    std::cin >> UserAge;
+    std::cin >> UserAge; //todo: only int
     std::cout << "Enter user weight: ";
-    std::cin >> UserWeight;
-    users.push_back(User(UserFirstName, UserLastName, UserAge, UserWeight));
+    std::cin >> UserWeight; //todo only double
+    users.emplace_back(UserFirstName, UserLastName, UserAge, UserWeight);
 
     std::cout<<"\nCreated a new user!"<<std::endl<<std::endl;
     system("pause");
@@ -46,31 +56,41 @@ void displayUsers(std::vector<User>users){
     }
 }
 
-void displayUsersMenu(std::vector<User>&users){
-    std::cout<<"GYM PROGRESS TRACKING APP"<<std::endl<<std::endl;
-    if(users.empty())
-        std::cout<<"There are no users, add some!"<<std::endl<<std::endl;
-    else
-        displayUsers(users);
+void displayMainMenu(std::vector<User>&users){
+    char select='1';
 
-    std::cout<<"\nSelect your profile or type '0' to add another one: ";
-    int select;
-    std::cin>>select;
+    while(select!='x') {
+        std::cout << "GYM PROGRESS TRACKING APP" << std::endl << std::endl;
+        if (users.empty())
+            std::cout << "There are no users, add some!" << std::endl << std::endl;
+        else
+            displayUsers(users);
 
-    if(select==0)
-        addUser(users);
-    else
-        SELECTED_USER = select;
-        //TODO: menu of user with his plan etc.
+        std::cout << "\nType '0' to add another profile."
+                     "\nType 'x' to exit."
+                     "\nEnter your profile: ";
+        std::cin >> select;
+
+        if(select=='0')
+            addUser(users);
+        else if(select=='x')
+            break;
+        else if(int(select)-48>=1&&int(select)-48<=users.size()) //todo: readme why that
+            displayUserMenu(users.at(int(select)-49));
+        else
+            std::cout<<"Wrong choice, try again."<<std::endl;
+        system("pause");
+        system("cls");
+    }
+
 }
 
 int main() {
     std::vector<User>users;
 
     users.emplace_back("Szymon","Kubica",21,85);
-    while(true) {
-        displayUsersMenu(users);
-    }
+
+    displayMainMenu(users);
 
     return 0;
 }
