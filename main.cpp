@@ -115,12 +115,16 @@ void addUser(std::vector<User>&users){
     getline(std::cin,UserFirstName);
     std::cout << "Enter the last name: ";
     getline(std::cin,UserLastName);
+
     try {
         std::cout << "Enter user age: ";
+
         if(!(std::cin >> UserAge))
             throw UserAge;
         clearInput();
+
         std::cout << "Enter user weight: ";
+
         if(!(std::cin >> UserWeight))
             throw UserWeight;
         clearInput();
@@ -165,8 +169,10 @@ void displayMainMenu(std::vector<User>&users){
                 throw select;
 
             if(isValidNumber(select)) {
-                if (!(std::stoi(select) >= 1 && std::stoi(select) <= users.size()))
+                if (!(std::stoi(select) >= 0 && std::stoi(select) <= users.size()))
                     throw stoi(select);
+                if(std::stoi(select)==0)
+                    break;
                 displayUserMenu(users.at(std::stoi(select) - 1));
             }
             else if(select=="+")
