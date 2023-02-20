@@ -11,7 +11,23 @@ void displayMainMenu(std::vector<User>&users);
 void addUser(std::vector<User>&users);
 void displayUserMenu(User &user);
 void changePersonalInformation(User &user);
+void userDelete(std::vector<User> &users);
 //end of declaration
+
+void userDelete(std::vector<User> &users){
+    system("cls");
+    displayUsers(users);
+    int select;
+    std::cout<<"\nEnter '0' to return."<<std::endl;
+    std::cout<<"Which user do you want to delete?: ";
+    std::cin>>select;
+    if(select==0)
+        return;
+    else if(select>0&&select<=users.size())
+        users.erase(users.begin()+select-1);
+    else
+        std::cout<<"Wrong user."<<std::endl;
+}
 
 void changePersonalInformation(User &user){
     std::string newName;
@@ -119,13 +135,15 @@ void displayMainMenu(std::vector<User>&users){
         else
             displayUsers(users);
 
-        std::cout << "\nType '+' to add another profile."
+        std::cout << std::left<<std::setw(40)<<"\nType '+' to add another profile."<<"Type '-' to delete user"<<
                      "\nType '0' to exit."
                      "\nEnter your profile: ";
         std::cin >> select;
 
         if(select=='+')
             addUser(users);
+        else if(select=='-')
+            userDelete(users);
         else if(select=='0')
             break;
         else if(int(select)-48>=1&&int(select)-48<=users.size()) //todo: readme why that
