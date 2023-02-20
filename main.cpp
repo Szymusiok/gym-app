@@ -4,8 +4,10 @@
 #include <vector>
 #include <stdlib.h>
 #include <iomanip>
+#include <limits>
 
 //Function declaration
+void clearInput();
 void displayUsers(std::vector<User>users);
 void displayMainMenu(std::vector<User>&users);
 void addUser(std::vector<User>&users);
@@ -109,18 +111,28 @@ void addUser(std::vector<User>&users){
     unsigned int UserAge;
     double UserWeight;
 
-    std::cin.ignore();
     std::cout << "Enter the first name: ";
     getline(std::cin,UserFirstName);
     std::cout << "Enter the last name: ";
     getline(std::cin,UserLastName);
-    std::cout << "Enter user age: ";
-    std::cin >> UserAge; //todo: only int
-    std::cout << "Enter user weight: ";
-    std::cin >> UserWeight; //todo only double
-    users.emplace_back(UserFirstName, UserLastName, UserAge, UserWeight);
+    try {
+        std::cout << "Enter user age: ";
+        if(!(std::cin >> UserAge))
+            throw UserAge;
+        clearInput();
+        std::cout << "Enter user weight: ";
+        if(!(std::cin >> UserWeight))
+            throw UserWeight;
+        clearInput();
 
-    std::cout<<"\nCreated a new user!"<<std::endl<<std::endl;
+        users.emplace_back(UserFirstName, UserLastName, UserAge, UserWeight);
+        std::cout<<"\nCreated a new user!"<<std::endl<<std::endl;
+
+    }
+    catch(...){
+        std::cout<<"Wrong input! Try again."<<std::endl;
+    }
+    clearInput();
     system("pause");
     system("cls");
 }
@@ -146,7 +158,6 @@ void displayMainMenu(std::vector<User>&users){
         std::cout << std::left<<std::setw(40)<<"\nType '+' to add another profile."<<"Type '-' to delete user"<<
                                                "\nType '0' to exit."
                                                "\nEnter your profile: ";
-        std::cin.clear();
         try {
             getline(std::cin,select);
 
@@ -177,6 +188,11 @@ void displayMainMenu(std::vector<User>&users){
         system("cls");
     }
 
+}
+
+void clearInput(){
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 }
 
 int main() {
