@@ -12,7 +12,15 @@ void addUser(std::vector<User>&users);
 void displayUserMenu(User &user);
 void changePersonalInformation(User &user);
 void userDelete(std::vector<User> &users);
+bool isValidNumber(std::string select);
 //end of declaration
+
+bool isValidNumber(std::string select){
+    for (char const letter : select)
+        if(std::isdigit(letter)==0)
+            return false;
+    return true;
+}
 
 void userDelete(std::vector<User> &users){
     system("cls");
@@ -34,7 +42,7 @@ void changePersonalInformation(User &user){
     int age;
 
     std::cout<<"Enter new first name: ";
-    std::cin.ignore();
+    std::cin.clear();
     getline(std::cin,newName);
     user.setUserFirstName(newName);
 
@@ -126,9 +134,9 @@ void displayUsers(std::vector<User>users){
 }
 
 void displayMainMenu(std::vector<User>&users){
-    char select='1';
+    std::string select="1";
 
-    while(select!='x') {
+    while(select!="x") {
         std::cout << "GYM PROGRESS TRACKING APP" << std::endl << std::endl;
         if (users.empty())
             std::cout << "There are no users, add some!" << std::endl << std::endl;
@@ -136,20 +144,35 @@ void displayMainMenu(std::vector<User>&users){
             displayUsers(users);
 
         std::cout << std::left<<std::setw(40)<<"\nType '+' to add another profile."<<"Type '-' to delete user"<<
-                     "\nType '0' to exit."
-                     "\nEnter your profile: ";
-        std::cin >> select;
+                                               "\nType '0' to exit."
+                                               "\nEnter your profile: ";
+        std::cin.clear();
+        try {
+            getline(std::cin,select);
 
-        if(select=='+')
-            addUser(users);
-        else if(select=='-')
-            userDelete(users);
-        else if(select=='0')
-            break;
-        else if(int(select)-48>=1&&int(select)-48<=users.size()) //todo: readme why that
-            displayUserMenu(users.at(int(select)-49));
-        else
-            std::cout<<"Wrong choice, try again."<<std::endl;
+            if(select!="+" && select!="-" && select!="0" && !isValidNumber(select))
+                throw select;
+
+            if(isValidNumber(select)) {
+                if (!(std::stoi(select) >= 1 && std::stoi(select) <= users.size()))
+                    throw stoi(select);
+                displayUserMenu(users.at(std::stoi(select) - 1));
+            }
+            else if(select=="+")
+                addUser(users);
+            else if(select=="-")
+                userDelete(users);
+        }
+        catch(std::string mistake){
+            std::cerr<<mistake<<" is the wrong input! Try again."<<std::endl;
+        }
+        catch(int mistake){
+            std::cerr<<"Profile number "<<mistake<<" does not exist! Try again."<<std::endl;
+        }
+        catch(...){
+            std::cout<<"Wrong input! Try again."<<std::endl;
+        }
+
         system("pause");
         system("cls");
     }
