@@ -8,6 +8,13 @@
 #include <string>
 #include <iomanip>
 
+bool isValidNumber0(std::string word){
+    for (char const letter : word)
+        if(std::isdigit(letter)==0)
+            return false;
+    return true;
+}
+
 std::ostream &operator<<(std::ostream &os, const User &user){
     os << "Name: " << user.UserFirstName << " " << user.UserLastname <<
        "\nAge: " << user.UserAge<<" y/o\nWeight: "<<user.UserWeight<<" kg"<<std::endl;
@@ -47,23 +54,29 @@ void User::setUserWeight(double weight) {
 }
 
 void User::addExercise() {
-    std::string ExerciseName;
+    std::string exerciseName;
 
     std::cout<<"Enter name: ";
-    std::cin.ignore();
-    getline(std::cin,ExerciseName);
+    std::cin.clear();
+    getline(std::cin,exerciseName);
+    if(exerciseName.size()>25)
+        throw 4;
 
-    UserExercises.push_back(Exercise(ExerciseName));
-    std::cout<<"Exercise "<<ExerciseName<<" added succesfully!"<<std::endl;
+    UserExercises.push_back(Exercise(exerciseName));
+    std::cout<<"Exercise "<<exerciseName<<" added succesfully!"<<std::endl;
 }
 
 void User::deleteExercise() {
-    int Select;
-
+    std::string select;
     std::cout<<"Which exercise you want to delete: ";
-    std::cin>>Select;
+    getline(std::cin,select);
 
-    UserExercises.erase(UserExercises.begin()+Select-1);
+    if(!isValidNumber0(select))
+        throw 2;
+    if(std::stoi(select)==0 || std::stoi(select)>UserExercises.size())
+        throw 3;
+
+    UserExercises.erase(UserExercises.begin() + stoi(select) - 1);
 
     std::cout<<"Exercise deleted succesfully!"<<std::endl;
 }

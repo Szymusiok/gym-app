@@ -14,11 +14,11 @@ void addUser(std::vector<User>&users);
 void displayUserMenu(User &user);
 void changePersonalInformation(User &user);
 void userDelete(std::vector<User> &users);
-bool isValidNumber(std::string select);
+bool isValidNumber(std::string word);
 //end of declaration
 
-bool isValidNumber(std::string select){
-    for (char const letter : select)
+bool isValidNumber(std::string word){
+    for (char const letter : word)
         if(std::isdigit(letter)==0)
             return false;
     return true;
@@ -58,8 +58,8 @@ void changePersonalInformation(User &user){
 }
 
 void displayUserMenu(User &user) {
-    int select=1;
-    while(select!=0) {
+    std::string select;
+    while(select!="0") {
         system("cls");
 
         std::cout << user << std::endl;
@@ -72,30 +72,55 @@ void displayUserMenu(User &user) {
         std::cout << std::left<<std::setw(25)<<"2. Delete exercise."<<"5. Change user weight."<<std::endl;
         std::cout << std::left<<std::setw(25)<<"3. Update exercise."<<"0. Return."<<std::endl;
         std::cout<<"Enter: ";
-        std::cin>>select;
-        switch(select){
-            case 0:
-                break;
-            case 1:
-                user.addExercise();
-                break;
-            case 2:
-                user.deleteExercise();
-                break;
-            case 3:
-                user.updateExercise();
-                break;
-            case 4:
-                changePersonalInformation(user);
-                break;
-            case 5:
-                std::cout<<"Enter new weight:";
-                double weight;
-                user.setUserWeight(weight);
-                break;
-            default:
-                std::cout<<"Wrong choice, try again."<<std::endl;
+        getline(std::cin,select);
+
+        try {
+            if(select.size()>1)
+                throw 1;
+            if(select.size()==0)
+                throw 3;
+
+            switch (select[0]) {
+                case '0':
+                    break;
+                case '1':
+                    user.addExercise();
+                    break;
+                case '2':
+                    user.deleteExercise();
+                    break;
+                case '3':
+                    user.updateExercise();
+                    break;
+                case '4':
+                    changePersonalInformation(user);
+                    break;
+                case '5':
+                    std::cout << "Enter new weight:";
+                    double weight;
+                    user.setUserWeight(weight);
+                    break;
+                default:
+                    std::cout << "Wrong choice, try again." << std::endl;
+            }
         }
+        catch(int error){
+            switch(error) {
+                case 1:
+                    std::cerr<<"Wrong input! Try again."<<std::endl;
+                    break;
+                case 2:
+                    std::cerr<<"Not a number! Try again."<<std::endl;
+                    break;
+                case 3:
+                    std::cerr << "Wrong number! Try again." << std::endl;
+                    break;
+                case 4:
+                    std::cerr<<"Tooo long, max length is 25!"<<std::endl;
+                    break;
+            }
+        }
+        system("pause");
     }
 }
 
@@ -120,13 +145,13 @@ void addUser(std::vector<User>&users){
         std::cout << "Enter user age: ";
 
         if(!(std::cin >> UserAge))
-            throw UserAge;
+            throw 0;
         clearInput();
 
         std::cout << "Enter user weight: ";
 
         if(!(std::cin >> UserWeight))
-            throw UserWeight;
+            throw 0;
         clearInput();
 
         users.emplace_back(UserFirstName, UserLastName, UserAge, UserWeight);
@@ -162,15 +187,17 @@ void displayMainMenu(std::vector<User>&users){
         std::cout << std::left<<std::setw(40)<<"\nType '+' to add another profile."<<"Type '-' to delete user"<<
                                                "\nType '0' to exit."
                                                "\nEnter your profile: ";
+        getline(std::cin,select);
+
         try {
-            getline(std::cin,select);
 
             if(select!="+" && select!="-" && select!="0" && !isValidNumber(select))
-                throw select;
+                throw 1;
 
+            //todo: change this down into something better -> switch case
             if(isValidNumber(select)) {
                 if (!(std::stoi(select) >= 0 && std::stoi(select) <= users.size()))
-                    throw stoi(select);
+                    throw 2;
                 if(std::stoi(select)==0)
                     break;
                 displayUserMenu(users.at(std::stoi(select) - 1));
@@ -180,14 +207,15 @@ void displayMainMenu(std::vector<User>&users){
             else if(select=="-")
                 userDelete(users);
         }
-        catch(std::string mistake){
-            std::cerr<<mistake<<" is the wrong input! Try again."<<std::endl;
-        }
-        catch(int mistake){
-            std::cerr<<"Profile number "<<mistake<<" does not exist! Try again."<<std::endl;
-        }
-        catch(...){
-            std::cout<<"Wrong input! Try again."<<std::endl;
+        catch(int error){
+            switch(error) {
+                case 1:
+                    std::cerr << "Wrong input! Try again." << std::endl;
+                    break;
+                case 2:
+                    std::cerr << "Profile does not exist! Try again." << std::endl;
+                    break;
+            }
         }
 
         system("pause");
