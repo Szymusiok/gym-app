@@ -82,24 +82,33 @@ void User::deleteExercise() {
 }
 
 void User::updateExercise() {
-    double ExerciseWeight;
-    unsigned int ExerciseSeries, ExerciseReps;
-    int Select;
+    std::string select, exerciseSeries, exerciseReps,exerciseWeight;
 
     std::cout<<"Which exercise you want to update: ";
-    std::cin>>Select;
+    getline(std::cin,select);
+    if(!isValidNumber0(select))
+        throw 2;
+    if(std::stoi(select)==0 || std::stoi(select)>UserExercises.size())
+        throw 3;
 
     std::cout<<"Enter new weight: ";
-    std::cin>>ExerciseWeight;
-    UserExercises.at(Select-1).setExerciseWeight(ExerciseWeight);
+    getline(std::cin,exerciseWeight);
+    if(!isValidNumber0(exerciseWeight))
+        throw 2;
+    UserExercises.at(std::stoi(select)-1).setExerciseWeight(std::stoi(exerciseWeight));
+
 
     std::cout<<"Enter number of series: ";
-    std::cin>>ExerciseSeries;
-    UserExercises.at(Select-1).setExerciseSeries(ExerciseSeries);
+    getline(std::cin,exerciseSeries);
+    if(!isValidNumber0(exerciseSeries))
+        throw 2;
+    UserExercises.at(std::stoi(select)-1).setExerciseSeries(std::stoi(exerciseSeries));
 
     std::cout<<"Enter number of reps: ";
-    std::cin>>ExerciseReps;
-    UserExercises.at(Select-1).setExerciseReps(ExerciseReps);
+    getline(std::cin,exerciseReps);
+    if(!isValidNumber0(exerciseReps))
+        throw 2;
+    UserExercises.at(std::stoi(select)-1).setExerciseReps(std::stoi(exerciseReps));
 
     std::cout<<"Exercise udpated succesfully!"<<std::endl;
 }

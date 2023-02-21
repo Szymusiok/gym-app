@@ -7,12 +7,12 @@
 #include <limits>
 
 //Function declaration
-void clearInput();
 void displayUsers(std::vector<User>users);
 void displayMainMenu(std::vector<User>&users);
 void addUser(std::vector<User>&users);
 void displayUserMenu(User &user);
 void changePersonalInformation(User &user);
+void changeUserWeight(User &user);
 void userDelete(std::vector<User> &users);
 bool isValidNumber(std::string word);
 //end of declaration
@@ -27,24 +27,30 @@ bool isValidNumber(std::string word){
 void userDelete(std::vector<User> &users){
     system("cls");
     displayUsers(users);
-    int select;
+    std::string select;
     std::cout<<"\nEnter '0' to return."<<std::endl;
     std::cout<<"Which user do you want to delete?: ";
-    std::cin>>select;
-    if(select==0)
-        return;
-    else if(select>0&&select<=users.size())
-        users.erase(users.begin()+select-1);
-    else
-        std::cout<<"Wrong user."<<std::endl;
+    getline(std::cin,select);
+
+    if(isValidNumber(select)) {
+        if (!(std::stoi(select) > 0 && std::stoi(select) <= users.size()))
+            throw 2;
+    }else
+        throw 1;
+
+    switch(std::stoi(select)){
+        case 0:
+            break;
+        default:
+            users.erase(users.begin()+std::stoi(select)-1);
+    }
+    std::cout<<"User deleted succesfully!"<<std::endl;
 }
 
 void changePersonalInformation(User &user){
-    std::string newName;
-    int age;
+    std::string newName,age;
 
     std::cout<<"Enter new first name: ";
-    std::cin.clear();
     getline(std::cin,newName);
     user.setUserFirstName(newName);
 
@@ -53,8 +59,19 @@ void changePersonalInformation(User &user){
     user.setUserLastname(newName);
 
     std::cout<<"Enter new age: ";
-    std::cin>>age;
-    user.setUserAge(age);
+    getline(std::cin,age);
+    if(!isValidNumber(age))
+        throw 2;
+    user.setUserAge(std::stoi(age));
+}
+
+void changeUserWeight(User &user){
+    std::cout << "Enter new weight:";
+    std::string weight;
+    getline(std::cin,weight);
+    if(!isValidNumber(weight))
+        throw 2;
+    user.setUserWeight(std::stoi(weight));
 }
 
 void displayUserMenu(User &user) {
@@ -96,9 +113,7 @@ void displayUserMenu(User &user) {
                     changePersonalInformation(user);
                     break;
                 case '5':
-                    std::cout << "Enter new weight:";
-                    double weight;
-                    user.setUserWeight(weight);
+                    changeUserWeight(user);
                     break;
                 default:
                     std::cout << "Wrong choice, try again." << std::endl;
@@ -146,13 +161,11 @@ void addUser(std::vector<User>&users){
 
         if(!(std::cin >> UserAge))
             throw 0;
-        clearInput();
 
         std::cout << "Enter user weight: ";
 
         if(!(std::cin >> UserWeight))
             throw 0;
-        clearInput();
 
         users.emplace_back(UserFirstName, UserLastName, UserAge, UserWeight);
         std::cout<<"\nCreated a new user!"<<std::endl<<std::endl;
@@ -161,7 +174,6 @@ void addUser(std::vector<User>&users){
     catch(...){
         std::cout<<"Wrong input! Try again."<<std::endl;
     }
-    clearInput();
     system("pause");
     system("cls");
 }
@@ -191,21 +203,24 @@ void displayMainMenu(std::vector<User>&users){
 
         try {
 
-            if(select!="+" && select!="-" && select!="0" && !isValidNumber(select))
-                throw 1;
-
-            //todo: change this down into something better -> switch case
-            if(isValidNumber(select)) {
+            if(isValidNumber(select))
                 if (!(std::stoi(select) >= 0 && std::stoi(select) <= users.size()))
                     throw 2;
-                if(std::stoi(select)==0)
+            if(select.size()>1)
+                throw 1;
+
+            switch(select[0]){
+                case '0':
+                    return;
+                case '+':
+                    addUser(users);
                     break;
-                displayUserMenu(users.at(std::stoi(select) - 1));
+                case '-':
+                    userDelete(users);
+                    break;
+                default:
+                    displayUserMenu(users.at(std::stoi(select)-1));
             }
-            else if(select=="+")
-                addUser(users);
-            else if(select=="-")
-                userDelete(users);
         }
         catch(int error){
             switch(error) {
@@ -222,11 +237,6 @@ void displayMainMenu(std::vector<User>&users){
         system("cls");
     }
 
-}
-
-void clearInput(){
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 }
 
 int main() {
