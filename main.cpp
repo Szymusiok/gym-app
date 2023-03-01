@@ -135,6 +135,10 @@ void displayUserMenu(User &user) {
                     break;
             }
         }
+        catch(...) {
+            std::cout << "Unexpected error!" << std::endl;
+        }
+
         system("pause");
     }
 }
@@ -231,6 +235,9 @@ void displayMainMenu(std::vector<User>&users){
                     std::cerr << "Profile does not exist! Try again." << std::endl;
                     break;
             }
+        }
+        catch(...) {
+            std::cout << "Unexpected error!" << std::endl;
         }
 
         system("pause");
