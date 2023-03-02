@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <iomanip>
 #include <limits>
+#include <fstream>
 
 //Function declaration
 void displayUsers(std::vector<User>users);
@@ -14,6 +15,8 @@ void displayUserMenu(User &user);
 void changePersonalInformation(User &user);
 void changeUserWeight(User &user);
 void userDelete(std::vector<User> &users);
+void readUsers(std::vector<User> &users);
+void saveExercises(User user);
 bool isValidNumber(std::string word);
 //end of declaration
 
@@ -22,6 +25,43 @@ bool isValidNumber(std::string word){
         if(std::isdigit(letter)==0)
             return false;
     return true;
+}
+
+void readUsers(std::vector<User> &users){
+    std::fstream users_database;
+    users_database.open("users_database.txt",std::ios::in);
+    if(!users_database)
+        throw 1;
+    std::string firstName, lastName,weight,age,read;
+    std::string::size_type pos;
+
+    while(getline(users_database,read)){
+        if(read=="||ENDOFUSERS||")
+            return;
+        pos = read.find('|');
+        firstName = read.substr(0,pos);
+        read.erase(0,pos+1);
+
+        pos = read.find('|');
+        lastName = read.substr(0,pos);
+        read.erase(0,pos+1);
+
+        pos = read.find('|');
+        age = read.substr(0,pos);
+        read.erase(0,pos+1);
+
+        weight = read;
+
+
+
+        users.push_back(User(firstName,lastName,std::stoi(age),std::stod(weight)));
+
+
+    }
+}
+
+void saveExercises(User user){
+
 }
 
 void userDelete(std::vector<User> &users){
@@ -85,7 +125,7 @@ void displayUserMenu(User &user) {
         user.displayExercises();
 
         std::cout << std::endl;
-        std::cout << std::left<<std::setw(25)<<"1. Add exercise."<<"4. Change personal information."<<std::endl;
+        std::cout << std::left<<std::setw(25)<<"1. Add exercise."<<std::left<<std::setw(35)<<"4. Change personal information."<<"S. Save exercises"<<std::endl;
         std::cout << std::left<<std::setw(25)<<"2. Delete exercise."<<"5. Change user weight."<<std::endl;
         std::cout << std::left<<std::setw(25)<<"3. Update exercise."<<"0. Return."<<std::endl;
         std::cout<<"Enter: ";
@@ -114,6 +154,9 @@ void displayUserMenu(User &user) {
                     break;
                 case '5':
                     changeUserWeight(user);
+                    break;
+                case 'S':
+                    saveExercises(user);
                     break;
                 default:
                     std::cout << "Wrong choice, try again." << std::endl;
@@ -192,7 +235,12 @@ void displayUsers(std::vector<User>users){
 
 void displayMainMenu(std::vector<User>&users){
     std::string select="1";
-
+    try {
+        readUsers(users);
+    }
+    catch(int error){
+        std::cout<<"file did not open!"<<std::endl;
+    }
     while(select!="x") {
         std::cout << "GYM PROGRESS TRACKING APP" << std::endl << std::endl;
         if (users.empty())
@@ -248,7 +296,6 @@ void displayMainMenu(std::vector<User>&users){
 
 int main() {
     std::vector<User>users;
-
     users.emplace_back("Szymon","Kubica",21,85);
 
     displayMainMenu(users);
