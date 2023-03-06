@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-
 class User {
     friend std::ostream &operator<<(std::ostream &os, const User &user);
 private:

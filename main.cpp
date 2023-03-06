@@ -16,6 +16,7 @@ void changePersonalInformation(User &user);
 void changeUserWeight(User &user);
 void userDelete(std::vector<User> &users);
 void readUsers(std::vector<User> &users);
+void readExercises(std::vector<User> &users);
 void saveExercises(User user);
 bool isValidNumber(std::string word);
 //end of declaration
@@ -52,12 +53,12 @@ void readUsers(std::vector<User> &users){
 
         weight = read;
 
-
-
         users.push_back(User(firstName,lastName,std::stoi(age),std::stod(weight)));
-
-
     }
+}
+
+void readExercises(std::vector<User> &users){
+
 }
 
 void saveExercises(User user){
@@ -202,6 +203,14 @@ void addUser(std::vector<User>&users){
     getline(std::cin,UserFirstName);
     std::cout << "Enter the last name: ";
     getline(std::cin,UserLastName);
+
+    for(auto user : users){
+        if(user.getUserFirstName() == UserFirstName && user.getUserLastname() == UserLastName) {
+            std::cout << "This users exist!" << std::endl;
+            return;
+        }
+
+    }
 
     try {
         std::cout << "Enter user age: ";
