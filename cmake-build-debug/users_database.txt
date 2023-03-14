@@ -1,3 +1,11 @@
-Andrzej|Gawron|31|90
+Mikolaj|Kowalski|31|90
 Stefan|Wifon|200|300
 ||ENDOFUSERS||
+||U||
+Mikolaj|Kowalski
+Wznosy|10|3|15
+Wyciskanie lezac|100|4|12
+||END||
+||U||
+Stefan|Wifon
+Wyciskanie lezac|0|10|50

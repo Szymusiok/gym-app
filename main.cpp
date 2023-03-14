@@ -16,7 +16,7 @@ void changePersonalInformation(User &user);
 void changeUserWeight(User &user);
 void userDelete(std::vector<User> &users);
 void readUsers(std::vector<User> &users);
-void readExercises(std::vector<User> &users);
+void readExercises(User &user);
 void saveExercises(User user);
 bool isValidNumber(std::string word);
 //end of declaration
@@ -57,8 +57,57 @@ void readUsers(std::vector<User> &users){
     }
 }
 
-void readExercises(std::vector<User> &users){
+void readExercises(User &user) {
+    std::fstream users_database;
+    users_database.open("users_database.txt", std::ios::in);
+    if (!users_database)
+        throw 1;
 
+    std::string firstName, lastName;
+    std::string name, weight, series, reps, read;
+    std::string::size_type pos;
+
+    while (getline(users_database, read))
+        if (read == "||ENDOFUSERS||")
+            break;
+
+    while(getline(users_database,read)){
+        if(read=="||U||") {
+            getline(users_database, read);
+
+            pos = read.find('|');
+            firstName = read.substr(0,pos);
+            read.erase(0,pos+1);
+
+            pos = read.find('|');
+            lastName = read.substr(0,pos);
+
+            if((firstName==user.getUserFirstName()&&lastName==user.getUserLastname())) {
+                while(getline(users_database,read)){
+                    if(read=="||END||")
+                        return;
+                    pos = read.find('|');
+                    name = read.substr(0,pos);
+                    read.erase(0,pos+1);
+
+                    pos = read.find('|');
+                    weight = read.substr(0,pos);
+                    read.erase(0,pos+1);
+
+                    pos = read.find('|');
+                    series = read.substr(0,pos);
+                    read.erase(0,pos+1);
+
+                    pos = read.find('|');
+                    reps = read.substr(0,pos);
+                    read.erase(0,pos+1);
+
+                    user.readExercise(name,std::stod(weight),std::stoi(series),std::stoi(reps));
+                }
+            } else
+                continue;
+        }
+    }
 }
 
 void saveExercises(User user){
@@ -245,7 +294,7 @@ void displayUsers(std::vector<User>users){
 void displayMainMenu(std::vector<User>&users){
     std::string select="1";
     try {
-        readUsers(users);
+        //readUsers(users);
     }
     catch(int error){
         std::cout<<"file did not open!"<<std::endl;
@@ -306,6 +355,9 @@ void displayMainMenu(std::vector<User>&users){
 int main() {
     std::vector<User>users;
     users.emplace_back("Szymon","Kubica",21,85);
+    readUsers(users);
+    for(auto user : users)
+        readExercises(user);
 
     displayMainMenu(users);
 

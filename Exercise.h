@@ -19,6 +19,8 @@ public:
     Exercise() = default;
     Exercise(std::string name)
     : ExerciseName{name}, ExerciseWeight{0}, ExerciseSeries{0}, ExerciseReps{0} {}
+    Exercise(std::string name, double weight, unsigned int series, unsigned int reps)
+    : ExerciseName{name}, ExerciseWeight{weight}, ExerciseSeries{series}, ExerciseReps{reps} {}
     ~Exercise() = default;
 
     std::string getExerciseName() const;

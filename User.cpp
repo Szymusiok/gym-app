@@ -127,3 +127,7 @@ void User::displayExercises() {
         }
     }
 }
+
+void User::readExercise(std::string name, double weight, unsigned int series, unsigned int reps) {
+    UserExercises.push_back(Exercise(name,weight,series,reps));
+}

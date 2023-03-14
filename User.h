@@ -41,6 +41,8 @@ public:
     void deleteExercise();
     void updateExercise();
     void displayExercises();
+
+    void readExercise(std::string name, double weight, unsigned int series, unsigned int reps);
 };
 
 
