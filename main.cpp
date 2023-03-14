@@ -55,6 +55,7 @@ void readUsers(std::vector<User> &users){
 
         users.push_back(User(firstName,lastName,std::stoi(age),std::stod(weight)));
     }
+    users_database.close();
 }
 
 void readExercises(User &user) {
@@ -108,6 +109,7 @@ void readExercises(User &user) {
                 continue;
         }
     }
+    users_database.close();
 }
 
 void saveExercises(User user){
@@ -294,10 +296,12 @@ void displayUsers(std::vector<User>users){
 void displayMainMenu(std::vector<User>&users){
     std::string select="1";
     try {
-        //readUsers(users);
+        readUsers(users);
+        for(auto &user : users)
+            readExercises(user);
     }
     catch(int error){
-        std::cout<<"file did not open!"<<std::endl;
+        std::cout<<"Database did not open!"<<std::endl;
     }
     while(select!="x") {
         std::cout << "GYM PROGRESS TRACKING APP" << std::endl << std::endl;
@@ -355,9 +359,6 @@ void displayMainMenu(std::vector<User>&users){
 int main() {
     std::vector<User>users;
     users.emplace_back("Szymon","Kubica",21,85);
-    readUsers(users);
-    for(auto user : users)
-        readExercises(user);
 
     displayMainMenu(users);
 
